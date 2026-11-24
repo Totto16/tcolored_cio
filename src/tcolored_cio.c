@@ -1,4 +1,4 @@
-#include "./colored_fprintf.h"
+#include "./tcolored_cio.h"
 
 #include <errno.h>
 #include <stdarg.h>

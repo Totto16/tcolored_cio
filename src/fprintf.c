@@ -1,4 +1,4 @@
-#include "./tcolored_cio.h"
+#include "./fprintf.h"
 
 #include <errno.h>
 #include <stdarg.h>
@@ -39,7 +39,8 @@ static int64_t fprintf_single_color(FILE* stream, tstr_view str) {
 	return result;
 }
 
-int64_t COLORED_FPRINTF_PRINTF_ATTR(2, 3) color_fprintf(FILE* stream, const char* const fmt, ...) {
+int64_t COLORED_CIO_FPRINTF_PRINTF_ATTR(2, 3)
+    tcolored_cio_fprintf(FILE* stream, const char* const fmt, ...) {
 
 	va_list args;
 
@@ -54,7 +55,7 @@ int64_t COLORED_FPRINTF_PRINTF_ATTR(2, 3) color_fprintf(FILE* stream, const char
 	for(; fmt[i] != '\0'; ++i) {
 		unsigned char character = fmt[i];
 
-		if(character == COLORED_FPRINTF_COLOR_START_MARKER_CHAR) {
+		if(character == COLORED_CIO_FPRINTF_COLOR_START_MARKER_CHAR) {
 			// have a start, flush the previous string
 			if(offs != i) {
 				// we need to do something
@@ -73,11 +74,11 @@ int64_t COLORED_FPRINTF_PRINTF_ATTR(2, 3) color_fprintf(FILE* stream, const char
 
 			for(++i; fmt[i] != '\0'; ++i) {
 				unsigned char character_2 = fmt[i];
-				if(character_2 == COLORED_FPRINTF_COLOR_START_MARKER_CHAR) {
+				if(character_2 == COLORED_CIO_FPRINTF_COLOR_START_MARKER_CHAR) {
 					// error, expected end first
 					errno = EINVAL;
 					return -1;
-				} else if(character_2 == COLORED_FPRINTF_COLOR_END_MARKER_CHAR) {
+				} else if(character_2 == COLORED_CIO_FPRINTF_COLOR_END_MARKER_CHAR) {
 					end_idx = i;
 					break;
 				}
